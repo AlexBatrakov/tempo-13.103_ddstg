@@ -1,9 +1,9 @@
 # Tempo software with the DDSTG model implementation
 
-From original tempo repositorium
+1. From original tempo repositorium
 
 To make Tempo:
-
+------------------------
   ./prepare (only if compiling from a CVS checkout)
   ./configure [any desired options]
   make
@@ -17,3 +17,5 @@ either of the following:
 
 A permanent reference URL for tempo is at the Astrophysics Source Code Library:
   http://www.ascl.net/1509.002
+2. Quick Guide
+---------------
