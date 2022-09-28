@@ -1,4 +1,4 @@
-# Tempo software with the DDSTG model implementation
+# Tempo software with the implemented DDSTG model
 
 1. From original tempo repositorium
 ------------------------
