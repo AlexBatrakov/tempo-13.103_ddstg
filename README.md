@@ -1,6 +1,6 @@
 # Tempo software with the implemented DDSTG model
 
-1. From the original Tempo repositorium
+1. Installation gide
 ------------------------
 To make Tempo:
 
@@ -8,6 +8,10 @@ To make Tempo:
     ./configure [any desired options]
     make
     make install (optional)
+    
+Install the environment veriable $TEMPO to the folder with Tempo software and add it to the $PATH.
+
+Extract files in all subfolders of "data_ddstg" folder so that Tempo has an access to the precalulated grids.
 
 For further documentation and details on installation and testing, see
 either of the following:
@@ -30,4 +34,6 @@ The added files are:
  - ddstg_tools.f contains routines to read and interpolate grids of gravitational form-factors
 
 Other modified files contain "DDSTG" comment in the modified segment of the code.
+
+The folder "data_ddstg" contains subfolders for 11 different equations of state (EOS). Each subfolder consists of files with grids of masses and gravitational form-factors. All files in the subfolders are compressed and need to be extracted to the same folder so that Tempo could read the grids.
 
