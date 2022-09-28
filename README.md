@@ -28,5 +28,6 @@ The added files are:
  - bnryddstg.f contains formulae to caclulate relativistic time delays
  - mass2ddstg.f contains formulae to calculate post-Keplerian parameters in STG
  - ddstg_tools.f contains routines to read and interpolate grids of gravitational form-factors
- - other files with "DDSTG" comment
+
+Other modified files contain "DDSTG" comment in the modified segment of the code.
 
