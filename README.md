@@ -1,6 +1,6 @@
 # Tempo software with the implemented DDSTG model
 
-1. From original tempo repositorium
+1. From the original Tempo repositorium
 ------------------------
 To make Tempo:
 
