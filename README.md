@@ -1,9 +1,8 @@
 # Tempo software with the DDSTG model implementation
 
 1. From original tempo repositorium
-
-To make Tempo:
 ------------------------
+To make Tempo:
   ./prepare (only if compiling from a CVS checkout)
   ./configure [any desired options]
   make
