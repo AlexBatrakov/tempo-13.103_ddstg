@@ -1,4 +1,4 @@
-# tempo-13.103_ddstg
+# Tempo software with the DDSTG model implementation
 
 From original tempo repositorium
 
