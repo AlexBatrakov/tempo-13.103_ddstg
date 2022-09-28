@@ -22,6 +22,7 @@ http://www.ascl.net/1509.002
 ------------------------
 
 This Tempo version contains the DDSTG model, developed for testing scalar-tensor gravity (STG) theories with timing of binary pulsars. 
+
 The added files are:
 
  - bnryddstg.f contains formulae to caclulate relativistic time delays
