@@ -1,0 +1,53 @@
+PSR              B2127+11C3d
+RAJ      21:20:01.20420569  1          0.00000881
+DECJ      12:10:38.2089927  1           0.0002288
+POSEPOCH        59000.0000
+F0     29.9999999999999680  1  0.0000000000007280
+F1     -5.009463650499D-18  1  5.843601075249D-21
+PEPOCH        58000.000000
+START            58119.198
+FINISH           59939.913
+DM               67.100000
+SOLARN0               0.00
+EPHEM               DE440
+CLK                 UNCORR                          
+UNITS               TDB
+TIMEEPH             FB90
+T2CMETHOD           TEMPO
+CORRECT_TROPOSPHERE N
+PLANET_SHAPIRO      N
+DILATEFREQ          N
+NTOA                  3144
+TRES                  9.96
+TZRMJD  58119.19903087604016
+TZRFRQ            1250.000
+TZRSITE                  FA
+MODE                     1
+NITS                    10
+BINARY            DDSTG   
+A1            39.967256104  1         0.000007299
+E             0.5999999867  1        0.0000000158
+T0        59000.0000000055  1        0.0000000100
+PB        3.00000000011338  1    0.00000000005095
+OM          0.000000331888  1      0.000001177477
+OMDOT            0.2523373
+GAMMA          0.050051622
+PBDOT           -0.2225217
+XPBDOT           0.0074830  1           0.0803105
+SINI              0.996696
+MTOT             11.400098  1            0.000053
+M2                9.999130  1            0.000824
+DTHETA            2.748992
+DR               2.7397178
+ALPHA0          -0.0001300
+BETA0           -3.0300000
+EOS                 MPA1            
+COMP_TYPE           BH              
+MA               1.4009681
+ALPHAA          -0.0002354
+BETAA           -5.4868657
+kA              -0.0011523
+MB               9.9991296
+ALPHAB           0.0000000
+BETAB            0.0000000
+kB               0.0000000
