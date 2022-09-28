@@ -28,7 +28,7 @@ c       calculate values of arr, ar, si, gamma, pbdot under GR
 
 
       exact_der = .true.
-      exact_factor_der = .true.
+      exact_factor_der = .false.
 
       if (ddstg_read .eqv. .false.) then
         write(*,*) "Reading data for DDSTG"
@@ -81,58 +81,30 @@ c     making some aliases
       n = an
       e = ecc
 
-c5	continue
-c      arrold = arr
-c      arr=arr0*(1+(m1*m2/m**2 - 9)*0.5d0*m/arr) ** (2.d0/3)
-c      if (dabs((arr-arrold)/arr).gt.ARRTOL) goto 5
-c      arr=arr0*(1+(m1*m2/m**2 - 9)*0.5d0*m/arr) ** (2.d0/3)
-c      arr_it = arr 
-
       gamma_AB = 1 - 2*alphaA*alphaB/(1+alphaA*alphaB)                  !Damour2009 76
       eps = 2*gamma_AB + 1                                              !Damour Tailor1992 near 3.4
 
-c      W_mult = 1d0/(1d0 - 1d0/6d0*(5*eps + 3.0 - 2*nu) * (GAB*m*an) ** (2d0/3.0))
-
       arr = (GAB*m/an**2) ** (1d0/3) *(1 - 1d0/6*(5*eps + 3 - 2*nu) *   !Damour Tailor1992 3.9 correct
      +     (GAB*m*an) ** (2d0/3)  )
-
-c      write(*,*) "arr st vs gr: ", arr, arr_it
-c      arr = arr_it
 
       ar=arr*m2/m                                                       !correct
 
       si=x/ar                                                           !the exact value
 
-c      if (si > 1.0) then
-c            si = 1.0
-c      end if
-
-
 c     si = an*x/XB * (GAB*m*an) ** (-1.d0/3)                            !Damour1996 5.8 approximation
-
-c      write(*,*) "si st vs gr: ", si, x/(arr_it*m2/m)
-
-C     xk=3*m/(arr*(1-ecc**2))                 
+     
 C     IHS based on 060327 changing to non-tw89 defn for omdot.
       xk=3d0/(1-ecc**2)*(GAB*m*an) ** (2.d0/3) *                          !Damour1996 5.3
      2 ((1-1d0/3*alphaA*alphaB)/(1+alphaA*alphaB) - 
      3 (XA*betaB*alphaA**2 + XB*betaA*alphaB**2) /
      4 (6d0 * (1+alphaA*alphaB)**2)  )
 
-      k = xk
-
-c      xk = xk * W_mult
-c      write(*,*) "xk st vs gr: ", xk, 3*m/(arr0*(1-ecc**2))
-c      xk=3*m/(arr0*(1-ecc**2))         
+      k = xk 
 
 C     IHS 100420 changing gamma usage as well as per Norbert's advice
 C	gamma=ecc*m2*(m1+2*m2)/(an*arr*m)
       gamma=ecc/an*XB/(1+alphaA*alphaB)*(GAB*m*an) ** (2.d0/3) *        !Damour1996 4.9
      + (XB*(1+alphaA*alphaB) + 1d0 + alphaB*kA)
-
-c      gamma = xk * W_mult
-c      write(*,*) "gamma st vs gr: ", gamma, ecc*m2*(m1+2*m2)/(an*arr0*m)
-c      gamma=ecc*m2*(m1+2*m2)/(an*arr0*m)
 
       pbdot_m = -1.5d0*twopi/(1+alphaA*alphaB)*nu*(GAB*m*an)**(5.d0/3) *!Damour1992 6.52a
      + ecc**2*(1+ecc**2/4) * (1-ecc**2)**(-3.5d0) *
@@ -174,11 +146,6 @@ c      gamma=ecc*m2*(m1+2*m2)/(an*arr0*m)
      +    (1+ (73.d0/24)*ecc**2 + (37.d0/96)*ecc**4) * 
      +    m1*m2*m**(-1.d0/3)
 
-c      write(*,*) "pbdot st vs gr: ",pbdot, pbdot_old
-c      write(*,*) "pbdot_m, pbdot_d: ",pbdot_m, pbdot_d
-c      write(*,*) "pbdot_qphi, pbdot_qg: ",pbdot_qphi, pbdot_qg
-c      pbdot = pbdot_old
-
       dr = (GAB*m*an) ** (2.d0/3) / (m**2 * (1+alphaA*alphaB)) * 
      + ((3-alphaA*alphaB)*m1**2 + (6-alphaA*alphaB-kA*alphaB)*m1*m2 + 
      + (2-alphaA*alphaB-kA*alphaB)*m2**2)
@@ -186,11 +153,7 @@ c      pbdot = pbdot_old
       dth = (GAB*m*an) ** (2.d0/3) / (m**2 * (1+alphaA*alphaB)) * 
      + ((3.5d0-0.5*alphaA*alphaB)*m1**2 + (6-alphaA*alphaB-kA*alphaB)*m1*m2 + 
      + (2-alphaA*alphaB-kA*alphaB)*m2**2)
-
-c      write(*,*) "dr st vs gr: ",dr, (3*m1**2 + 6*m1*m2 + 2*m2**2)/(arr*m)
-c      write(*,*) "dth st vs gr: ",dth, (3.5d0*m1**2 + 6*m1*m2 + 2*m2**2)/(arr*m)
-
-        
+     
 c     Now caclulating derivatives
 
 c     here are approximated expressions for derivatives
@@ -213,16 +176,6 @@ c     here are approximated expressions for derivatives
 
       dpbdot_dm = dpbdot_dm_ap
 
-c     here are exact expressions for derivatives
-
-c      dk_dm = k * (-1d0/(3*m) + (-6+alphaA*(2*alphaB*(-2+alphaA*alphaB)+alphaA*alphaB)) / ((-6+alphaA*(2*alphaB*(-2+alphaA*alphaB)+alphaA*alphaB))*m + (alphaB**2*betaA-alphaA**2*betaB)*m2))
-c      dgamma_dm = gamma * (-4d0/(3*m) + (1d0+alphaB*kA)/(m*(1+alphaB*kA)+m2*(1+alphaA*alphaB))) 
-c      ddr_dm = dr * (-4d0/(3*m) + (2*(-3+alphaA*alphaB)*m + alphaB*(-alphaA+kA)*m2) / ((-3+alphaA*alphaB)*m**2 + alphaB*(-alphaA+kA)*m*m2 + (1+alphaA*alphaB)*m2**2))
-c      ddth_dm = dth * (-4d0/(3*m) + 2*((-7+alphaA*alphaB)*m + (1+alphaB+kA)*m2) / ((-7+alphaA*alphaB)*m**2 + 2*(1+alphaB+kA)*m*m2 + (1+alphaA*alphaB)*m2**2))
-c      dsi_dm = si * 2d0/(3*m)
-
-c     here are approximated expressions for derivatives
-
       dk_dm2 = 0d0
       dgamma_dm2 = gamma * (1d0/m2 + 1d0/(m+m2))
       dsi_dm2 = -si/m2
@@ -238,12 +191,6 @@ c     here are approximated expressions for derivatives
       dpbdot_dm2_ap = pbdot * (1d0/m2 + 1d0/(-m+m2))
 
 c     here are exact expressions for derivatives
-
-c      dk_dm2 = k * (alphaB**2*betaA-alphaA**2*betaB) / ((-6+alphaA*(2*alphaB*(-2+alphaA*alphaB)+alphaA*alphaB)*m + (alphaB**2*betaA-alphaA**2*betaB)*m2))
-c      dgamma_dm2 = gamma / m2 * (m*(1+alphaB*kA) + 2*m2*(1+alphaA*alphaB)) / (m*(1+alphaB*kA) + m2*(1+alphaA*alphaB))
-c      dsi_dm2 = -si/m2
-c      ddr_dm2 = dr * (alphaB*(-alphaA+kA)*m + 2*(1+alphaA*alphaB)*m2) / ((-3+alphaA*alphaB)*m**2 + alphaB*(-alphaA+kA)*m*m2 + (1+alphaA*alphaB)*m2**2)
-c      ddth_dm2 = dth * (2*((1+alphaB*kA)*m + (1+alphaA*alphaB)*m2)) / ((-7+alphaA*alphaB)*m**2 + 2*(1+alphaB+kA)*m*m2 + (1+alphaA*alphaB)*m2**2)
 
       if ((exact_der .eqv. .true.) .and. (gr_case .eqv. .false.)) then
 
@@ -359,21 +306,8 @@ c     Caclulating exact derivatives with respect to m2
 
       endif  
 
-c      write(*,*) "dk_dm GR/STG:", k * 2d0/(3*m) / dk_dm
-c      write(*,*) "dgamma_dm GR/STG:", gamma * (-4d0/(3*m) + 1d0/(m+m2)) / dgamma_dm
-c      write(*,*) "dsi_dm GR/STG:", si * 2d0/(3*m) / dsi_dm
-c      write(*,*) "ddr_dm GR/STG:", dr * (-4d0/(3*m) - 6*m/(-3*m**2+m2**2)) / ddr_dm
-c      write(*,*) "ddth_dm GR/STG:", dth * (-4d0/(3*m) - 2*(7*m-m2)/(-7*m**2+2*m*m2+m2**2)) / ddth_dm
-c      write(*,*) "dpbdot_dm GR/STG:", pbdot * (2*m+m2)/(3*m**2-3*m*m2) / dpbdot_dm
-c      write(*,*) "dpbdot_dm GR/STG:", dpbdot_dm_ap / dpbdot_dm
-
-c      write(*,*) "dk_dm2 GR/STG:", 0d0 / dk_dm2
-c      write(*,*) "dgamma_dm2 GR/STG:", gamma * (1d0/m2 + 1d0/(m+m2)) / dgamma_dm2
-c      write(*,*) "dsi_dm2 GR/STG:", -si/m2 / dsi_dm2
-c      write(*,*) "ddr_dm2 GR/STG:", dr * 2*m2/(-3*m**2+m2**2) / ddr_dm2
-c      write(*,*) "ddth_dm2 GR/STG:", dth * 2*(m+m2)/(-7*m**2+2*m*m2+m2**2) / ddth_dm2
-c      write(*,*) "dpbdot_dm2 GR/STG:", pbdot * (1d0/m2 + 1d0/(-m+m2)) / dpbdot_dm2 
-c      write(*,*) "dpbdot_dm2 GR/STG:", dpbdot_dm2_ap / dpbdot_dm2    
+c     here are corretions to derivatives due to the mass dependence of gravitational form-factors
+c     the derived expressions work not in all cases
 
       if ((exact_factor_der .eqv. .true.) .and. (gr_case .eqv. .false.)  .and. (beta0 /= 0.0d0) .and. (companion_type(1:2).ne.'BH')) then
 
@@ -484,46 +418,6 @@ c      write(*,*) "dpbdot_dm2 GR/STG:", dpbdot_dm2_ap / dpbdot_dm2
       dpbdot_dm2 = dpbdot_dm2 + dpbdot_dm2_factor
 
       endif
-
-c      dk_dm2 = dk_dm2_ap
-c      dgamma_dm2 = dgamma_dm2_ap
-c      dsi_dm2 = dsi_dm2_ap
-c      ddr_dm2 = ddr_dm2_ap 
-c      ddth_dm2 = ddth_dm2_ap
-c      dpbdot_dm2 = dpbdot_dm2_ap
-
-c      dk_dm = dk_dm_ap
-c      dgamma_dm = dgamma_dm_ap
-c      dsi_dm = dsi_dm_ap
-c      ddr_dm = ddr_dm_ap 
-c      ddth_dm = ddth_dm_ap
-c      dpbdot_dm = dpbdot_dm_ap
       
-C      write(*,*) "mtot:", am
-C      write(*,*) "m2:", am2
-C      write(*,*) "alphaA:", alphaA
-C      write(*,*) "betaA:", betaA
-C      write(*,*) "k:", k
-C      write(*,*) "gamma:", gamma
-C      write(*,*) "si", si
-C      write(*,*) "dr:", dr
-C      write(*,*) "dth:", dth
-C      write(*,*) "pbdot:", pbdot
-
-C      write(*,*) "dk_dm:", dk_dm * SUNMASS
-C      write(*,*) "dgamma_dm:", dgamma_dm * SUNMASS
-C      write(*,*) "dsi_dm", dsi_dm * SUNMASS
-C      write(*,*) "ddr_dm:", ddr_dm * SUNMASS
-C      write(*,*) "ddth_dm:", ddth_dm * SUNMASS
-C      write(*,*) "dpbdot_dm:", dpbdot_dm * SUNMASS
-
-C      write(*,*) "dk_dm2:", dk_dm2 * SUNMASS
-C      write(*,*) "dgamma_dm2:", dgamma_dm2 * SUNMASS
-C      write(*,*) "dsi_dm2:", dsi_dm2 * SUNMASS
-C      write(*,*) "ddr_dm2:", ddr_dm2 * SUNMASS
-C      write(*,*) "ddth_dm2:", ddth_dm2 * SUNMASS
-C      write(*,*) "dpbdot_dm2:", dpbdot_dm2 * SUNMASS
-  
-
         return
       end

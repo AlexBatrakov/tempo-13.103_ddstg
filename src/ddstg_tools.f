@@ -254,7 +254,7 @@ c      Given an array xx(1:n), and given a value x, returns a value j such that 
       return 
       END SUBROUTINE locate
 
-      SUBROUTINE hunt(xx,n,x,jlo)
+      SUBROUTINE hunt(xx,n,x,jlo) !not used cleverer routine
       INTEGER jlo,n
       REAL x,xx(n)
 c      Given an array xx(1:n), and given a value x, returns a value jlo such that x is between
