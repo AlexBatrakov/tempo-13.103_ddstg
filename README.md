@@ -12,6 +12,7 @@ To make Tempo:
 Install the environment veriable $TEMPO to the folder with Tempo software and add it to the $PATH.
 
 Extract files in all subfolders of "data_ddstg" folder so that Tempo has an access to the precalulated grids.
+
     find . -name "*.zip" | while read filename; do unzip -o -d "`dirname "$filename"`" "$filename"; done;
     find . -type f -name '*.zip' -delete
 
